@@ -24,8 +24,8 @@ export default class AwesomeApp extends Component {
     if (!this.state.isReady) {
       return <Expo.AppLoading />;
     }
-    // return <Login_Signup />
-    return <MainScreen />
+    return <Login_Signup />
+    // return <MainScreen />
 
   }
 

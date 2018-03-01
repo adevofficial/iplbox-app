@@ -9,7 +9,7 @@ import {
     H1
 } from 'native-base';
 import { Col, Row, Grid } from "react-native-easy-grid";
-import Logo from "./../Assets/logo.svg";
+import { Icons, LogoSvg } from "./../Assets";
 
 const styles = StyleSheet.create({ btnText: { color: "white", fontSize: 20, fontWeight: "bold", padding: 5 } });
 
@@ -20,7 +20,7 @@ export default () => {
                 <Col></Col>
                 <Col>
                     <View style={{ paddingTop: 20, alignItems: 'center' }}>
-                        <Image source={Logo} style={{ width: 200, height: 200 }} />
+                        <Image source={Icons.AlexaIPL} style={{ width: 200, height: 200 }} />
                         <H1 style={{ padding: 15, fontWeight: "bold", color: "white" }}>IPL Box</H1>
                     </View>
                 </Col>

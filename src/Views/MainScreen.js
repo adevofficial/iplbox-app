@@ -5,16 +5,38 @@ import {
     Text, View, Container, Button,
     Header, Footer, Content, Body,
     Left, Right, Card, CardItem,
-    Thumbnail, Toast, Fab
+    Thumbnail, Toast, Fab, Icon
 } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
-import Icon from 'react-native-vector-icons/Ionicons';
+// import Icon from 'react-native-vector-icons/Ionicons';
 
 window.navigator.userAgent = 'react-native';
 import Moment from 'react-moment';
+import {
+    MenuProvider,
+    Menu,
+    MenuOptions,
+    MenuOption,
+    MenuTrigger,
+} from "react-native-popup-menu";
 import isEmpty from "lodash/isEmpty";
-import { Icons, Logo } from "./../Assets";
+import { Icons, LogoSvg } from "./../Assets";
+import { Loader } from "./../Components";
 
+
+const dataLoader = [
+    { message: "IPLBox", image: Icons.AlexaIPL, submessage: "" },
+    {
+        message: "",
+        image: Icons.Cricket,
+        submessage: `IPLBrainz is an application that answers any queries related to IPL matches with the help of your voice assistant Alexa`
+    },
+    {
+        message: "",
+        image: Icons.MicroHuman,
+        submessage: `You can ask Alexa your query related to IPL by saying “Alexa start IPLbrain..” followed by your Question`
+    }
+];
 export default class MainScreen extends Component {
 
     constructor(props) {
@@ -61,90 +83,91 @@ export default class MainScreen extends Component {
         }, 1000);
     }
 
+    handleClearLog = () => {
+
+        this.setState({ logsList: [] });
+        console.log('Array Cleared')
+
+    };
 
     render() {
         let { state } = this;
         return (
-            <Container>
-                <Header style={{ marginTop: 24, backgroundColor: '#154360' }} >
-                    <Left>
-                        <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#ffffff' }} >
-                            IPLBox
+            <MenuProvider>
+                <Container>
+                    <Header style={{ marginTop: 24, backgroundColor: '#154360' }} >
+                        <Left>
+                            <Text style={{ fontSize: 18, fontWeight: 'bold', color: '#ffffff' }} >
+                                IPLBox
                         </Text>
-                    </Left>
-                    <Body />
-                    <Right />
-                </Header>
-                <Content>
-                    {state.logsList.map((singleQuery, i) => (
-                        <Card style={{ margin: 20 }} key={i}>
-                            <CardItem >
-                                <Left>
-                                    <Thumbnail source={Icons.User} style={styles.title_thumbnail} />
-                                    <Text style={styles.title_text} >
-                                        Query
+                        </Left>
+                        <Body />
+                        <Right>
+                            <Menu>
+                                <MenuTrigger >
+                                    <Icon name="menu" />
+                                </MenuTrigger >
+                                {/* <MenuTrigger text='Select action' > */}
+                                <MenuOptions>
+                                    <MenuOption onSelect={this.handleClearLog} text='Clear Log' />
+                                    <MenuOption text='Logout' />
+                                </MenuOptions>
+                            </Menu>
+                        </Right >
+                    </Header>
+                    <Content>
+                        {isEmpty(state.logsList) ?
+                            <Loader data={dataLoader} /> : <View />}
+                        {state.logsList.map((singleQuery, i) => (
+                            <Card style={{ margin: 20 }} key={i}>
+                                <CardItem >
+                                    <Left>
+                                        <Thumbnail source={Icons.User} style={styles.title_thumbnail} />
+                                        <Text style={styles.title_text} >
+                                            Query
                                 </Text>
-                                </Left>
-                                <Body />
-                                <Right style={styles.time_style} >
-                                    <Thumbnail source={Icons.Time} style={styles.time_thumbnail} />
-                                    <Text style={styles.time_text} > {singleQuery.timestamp} </Text>
-                                </Right>
-                            </CardItem>
-                            <CardItem style={styles.answer_item} >
-                                <Text style={styles.answer_text} >
-                                    {singleQuery.query_text}
+                                    </Left>
+                                    <Body />
+                                    <Right style={styles.time_style} >
+                                        <Thumbnail source={Icons.Time} style={styles.time_thumbnail} />
+                                        <Text style={styles.time_text} > {singleQuery.timestamp} </Text>
+                                    </Right>
+                                </CardItem>
+                                <CardItem style={styles.answer_item} >
+                                    <Text style={styles.answer_text} >
+                                        {singleQuery.query_text}
+                                    </Text>
+                                </CardItem>
+                                <CardItem>
+                                    <Left>
+                                        <Thumbnail source={Icons.AlexaIPL} style={styles.title_thumbnail} />
+                                        <Text style={styles.title_text}> Response </Text>
+                                    </Left>
+                                    <Body />
+                                    <Right style={styles.time_style}>
+                                        <Thumbnail source={Icons.Time} style={styles.time_thumbnail} />
+                                        <Text style={styles.time_text} > {singleQuery.timestamp}</Text>
+                                    </Right>
+                                </CardItem>
+                                <CardItem style={styles.answer_item} >
+                                    <Text style={styles.answer_text} >
+                                        {singleQuery.answer}
+                                    </Text>
+                                </CardItem>
+                                <CardItem >
+                                    <Left>
+                                        <Thumbnail source={Icons.ResponseTime} style={styles.title_thumbnail} />
+                                        <Text style={styles.title_text} >
+                                            Response Time :
                                 </Text>
-                            </CardItem>
-                            <CardItem>
-                                <Left>
-                                    <Thumbnail source={Icons.AlexaIPL} style={styles.title_thumbnail} />
-                                    <Text style={styles.title_text}> Response </Text>
-                                </Left>
-                                <Body />
-                                <Right style={styles.time_style}>
-                                    <Thumbnail source={Icons.Time} style={styles.time_thumbnail} />
-                                    <Text style={styles.time_text} > {singleQuery.timestamp}</Text>
-                                </Right>
-                            </CardItem>
-                            <CardItem style={styles.answer_item} >
-                                <Text style={styles.answer_text} >
-                                    {singleQuery.answer}
-                                </Text>
-                            </CardItem>
-                            <CardItem >
-                                <Left>
-                                    <Thumbnail source={Icons.ResponseTime} style={styles.title_thumbnail} />
-                                    <Text style={styles.title_text} >
-                                        Response Time :
-                                </Text>
-                                    <Text style={styles.answer_text} > {singleQuery.response_time} seconds  </Text>
-                                </Left>
-                            </CardItem>
-                        </Card>
-                    ))}
-
-
-                </Content>
-                <View style={{ flex: 1 }}>
-                    <Fab
-                        active={this.state.active}
-                        direction="up"
-                        style={{ backgroundColor: '#154360' }}
-                        position="bottomRight"
-                        onPress={() => this.setState({ active: !this.state.active })}>
-                        <Icon name="ios-cube-outline" />
-                        <Button style={{ backgroundColor: '#154360' }} onPress={() => {
-                            this.setState({ logsList: [] });
-                            console.log('Array Cleared')
-                        }}   >
-                            <Icon name="ios-close-circle-outline" color="white" />
-
-                        </Button>
-                    </Fab>
-                </View>
-
-            </Container>
+                                        <Text style={styles.answer_text} > {singleQuery.response_time} seconds  </Text>
+                                    </Left>
+                                </CardItem>
+                            </Card>
+                        ))}
+                    </Content>
+                </Container>
+            </MenuProvider>
         );
     }
 }
