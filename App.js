@@ -1,9 +1,7 @@
 import React, { Component } from "react";
 import { BackHandler } from "react-native"
 import Expo from "expo";
-import Login_Signup from "./src/Views/Login_Signup";
-import MainScreen from "./src/Views/MainScreen";
-
+import Main from "./Main";
 export default class AwesomeApp extends Component {
   constructor() {
     super();
@@ -24,7 +22,7 @@ export default class AwesomeApp extends Component {
     if (!this.state.isReady) {
       return <Expo.AppLoading />;
     }
-    return <Login_Signup />
+    return <Main />
     // return <MainScreen />
 
   }

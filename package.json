@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "expo": "^25.0.0",
+    "history": "^4.7.2",
     "lodash": "^4.17.5",
     "moment": "^2.20.1",
     "native-base": "^2.3.5",
@@ -29,6 +30,11 @@
     "react-native-easy-grid": "^0.1.17",
     "react-native-popup-menu": "^0.12.2",
     "react-native-vector-icons": "^4.4.3",
-    "react-navigation": "1.0.0-beta.21"
+    "react-navigation": "1.0.0-beta.21",
+    "react-redux": "^5.0.7",
+    "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
+    "redux-rest-resource": "^0.16.2",
+    "redux-thunk": "^2.2.0"
   }
 }

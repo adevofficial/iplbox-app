@@ -22,7 +22,9 @@ import {
 import isEmpty from "lodash/isEmpty";
 import { Icons, LogoSvg } from "./../Assets";
 import { Loader } from "./../Components";
-
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { Auth } from "./../Resource";
 
 const dataLoader = [
     { message: "IPLBox", image: Icons.AlexaIPL, submessage: "" },
@@ -37,7 +39,7 @@ const dataLoader = [
         submessage: `You can ask Alexa your query related to IPL by saying “Alexa start IPLbrain..” followed by your Question`
     }
 ];
-export default class MainScreen extends Component {
+class MainScreen extends Component {
 
     constructor(props) {
         super(props);
@@ -87,9 +89,11 @@ export default class MainScreen extends Component {
 
         this.setState({ logsList: [] });
         console.log('Array Cleared')
-
     };
 
+    handleLogout = () => {
+        this.props.actions.logoutAuth();
+    };
     render() {
         let { state } = this;
         return (
@@ -110,7 +114,7 @@ export default class MainScreen extends Component {
                                 {/* <MenuTrigger text='Select action' > */}
                                 <MenuOptions>
                                     <MenuOption onSelect={this.handleClearLog} text='Clear Log' />
-                                    <MenuOption text='Logout' />
+                                    <MenuOption onSelect={this.handleLogout} text='Logout' />
                                 </MenuOptions>
                             </Menu>
                         </Right >
@@ -183,3 +187,13 @@ const styles = StyleSheet.create({
     error_text: { fontSize: 16, color: 'red' }
 });
 
+const mapDispatchToProps = (dispatch) => {
+    const { logoutAuth } = Auth;
+    return {
+        actions: bindActionCreators({
+            logoutAuth
+        }, dispatch)
+    }
+};
+
+export default connect(() => ({}), mapDispatchToProps)(MainScreen);
